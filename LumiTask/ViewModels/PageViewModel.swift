@@ -21,17 +21,17 @@ class PageViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     func loadPage() async {
+        isLoading = true
         do {
-            isLoading = true
             let page = try await repository.loadAllPages()
             self.currentPage = page
             self.errorMessage = nil
-        } catch let error {
-            errorMessage = error.localizedDescription
+        } catch {
+            self.errorMessage = error.localizedDescription
         }
-        isLoading = false
-        
+        self.isLoading = false
     }
 }
 

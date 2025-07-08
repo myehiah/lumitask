@@ -29,6 +29,7 @@ struct LumiTaskApp: App {
 //            AppView(viewModel: pageVieModel)
 //            ContentView()
         }
+        .modelContainer(for: CachedImage.self)
 //        .modelContainer(sharedModelContainer)
     }
 }
