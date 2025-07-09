@@ -25,12 +25,9 @@ struct LumiTaskApp: App {
 
     var body: some Scene {
         WindowGroup {
-            PageRouterImp.create(context: sharedModelContainer.mainContext)
-//            AppView(viewModel: pageVieModel)
-//            ContentView()
+            PageRouter.create(context: sharedModelContainer.mainContext)
         }
         .modelContainer(sharedModelContainer)
-//        .modelContainer(sharedModelContainer)
     }
 }
 

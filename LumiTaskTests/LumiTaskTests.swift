@@ -33,15 +33,15 @@ struct LumiTaskTests {
         let page = try JSONDecoder().decode(Page.self, from: json)
 
         #expect(page.title == "Main Page")
-        #expect(page.items?.count == 2)
+        #expect(page.items.count == 2)
 
-        if case .section(let section) = page.items?[0] {
+        if case .section(let section) = page.items[0] {
             #expect(section.title == "Introduction")
         } else {
             #expect(Bool(false), "First item should be a section")
         }
 
-        if case .text(let text) = page.items?[1] {
+        if case .text(let text) = page.items[1] {
             #expect(text.title == "Welcome!")
         } else {
             #expect(Bool(false), "Second item should be text")
@@ -87,19 +87,19 @@ struct LumiTaskTests {
         let page = try decoder.decode(Page.self, from: json)
 
         #expect(page.title == "Main Page")
-        #expect(page.items?.count == 3)
+        #expect(page.items.count == 3)
 
-        if case .section(let introSection) = page.items?[0] {
+        if case .section(let introSection) = page.items[0] {
             #expect(introSection.title == "Introduction")
-            #expect(introSection.items?.count == 2)
+            #expect(introSection.items.count == 2)
 
-            if case .text(let textQuestion) = introSection.items?[0] {
+            if case .text(let textQuestion) = introSection.items[0] {
                 #expect(textQuestion.title == "Welcome to the main page!")
             } else {
                 #expect(Bool(false), "Expected text question as first item in section")
             }
 
-            if case .image(let imageQuestion) = introSection.items?[1] {
+            if case .image(let imageQuestion) = introSection.items[1] {
                 #expect(imageQuestion.title == "Welcome Image")
                 #expect(imageQuestion.src?.contains("robohash") ?? false)
             } else {

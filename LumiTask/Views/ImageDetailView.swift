@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// Views/ImageDetailView.swift
 struct ImageDetailView: View {
     let imageURL: String?
     let title: String

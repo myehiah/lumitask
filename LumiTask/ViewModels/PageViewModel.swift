@@ -34,5 +34,3 @@ class PageViewModel: ObservableObject {
         self.isLoading = false
     }
 }
-
-

@@ -9,7 +9,7 @@
 import Foundation
 
 struct PageReference: Codable, Identifiable {
-    let id = UUID()                     // for SwiftUI diffing
-    let title: String                   // display in UI
-    let pageId: String                  // used to load the page from cache
+    let id = UUID()                     
+    let title: String
+    let pageId: String
 }

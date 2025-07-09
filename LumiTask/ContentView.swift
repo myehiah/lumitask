@@ -2,60 +2,42 @@
 //  ContentView.swift
 //  LumiTask
 //
-//  Created by Mohamed Yehia on 04/07/2025.
+//  Created by Mohamed Yehia on 08/07/2025.
 //
 
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [ItemX]
-
+    @StateObject var viewModel: PageViewModel
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = ItemX(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+        if let page = viewModel.currentPage {
+            PageDetailsView(page: page)
         }
     }
 }
-
 #Preview {
-    ContentView()
-        .modelContainer(for: ItemX.self, inMemory: true)
+    do {
+        let url = Bundle.main.url(forResource: "MockPage", withExtension: "json")!
+        let data = try Data(contentsOf: url)
+        
+        //        let remote = RemoteDataSourceImp()
+        let remote = MockRemoteDataSource(mockData: data)
+        
+        let schema = Schema([CachedPage.self, CachedImage.self])
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: schema, configurations: [config])
+        let context = container.mainContext
+        
+        let local = LocalDataSourceImp(context: context)
+        let repo = PageRepository(remote: remote, local: local)
+        let viewModel = PageViewModel(repository: repo)
+        
+        return ContentView(viewModel: viewModel)
+            .modelContainer(container)
+        
+    } catch {
+        return Text("❌ Failed preview: \(error.localizedDescription)")
+    }
 }

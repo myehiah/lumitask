@@ -11,5 +11,5 @@ struct Section: Codable, Identifiable {
     let id = UUID()
     let type: String
     let title: String?
-    let items: [Item]?
+    let items: [Item]
 }
