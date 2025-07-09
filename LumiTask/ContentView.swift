@@ -8,21 +8,33 @@
 import SwiftUI
 import SwiftData
 
+import SwiftUI
+
 struct ContentView: View {
     @StateObject var viewModel: PageViewModel
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                if let page = viewModel.currentPage {
-                    PageDetailsView(page: page)
-                        .scrollTargetBehavior(.viewAligned)
-                        .navigationTitle(page.title ?? "")
+            if let errorMessage = viewModel.errorMessage {
+                ErrorView(viewModel: viewModel)
+            } else {
+                ScrollView {
+                    VStack {
+                        if let page = viewModel.currentPage {
+                            PageDetailsView(page: page)
+                                .scrollTargetBehavior(.viewAligned)
+                                .navigationTitle(page.title ?? "")
+                        } else if viewModel.isLoading {
+                            ProgressView()
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
                 }
-            }
-            .refreshable {
-                Task.detached {
-                    await viewModel.loadPage()
+                .refreshable {
+                    Task.detached {
+                        await viewModel.loadPage()
+                    }
                 }
             }
         }

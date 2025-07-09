@@ -12,6 +12,7 @@ import SwiftUI
 final class SplashViewModel: ObservableObject {
     @Published var isReady = false
     @Published var rootPage: Page?
+    @Published var errorMessage: String?
 
     private let repository: PageRepositoryProtocol
 
@@ -25,9 +26,9 @@ final class SplashViewModel: ObservableObject {
             self.rootPage = page
             self.isReady = true
         } catch {
-            print("⚠️ Failed to load initial data: \(error.localizedDescription)")
             self.isReady = true
-            self.rootPage = Page.init(type: "page", title: "", items: [])
+            self.rootPage = nil
+            self.errorMessage = "⚠️ Failed to load initial data: \(error.localizedDescription)"
         }
     }
 }

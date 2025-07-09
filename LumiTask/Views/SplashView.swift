@@ -15,8 +15,8 @@ struct SplashView: View {
 
     var body: some View {
         Group {
-            if viewModel.isReady, let page = viewModel.rootPage, !isAnimating {
-                PageRouter.create(context: context, page: page)
+            if viewModel.isReady, !isAnimating {
+                PageRouter.create(context: context, page: viewModel.rootPage)
             } else {
                 VStack {
                     Spacer()
