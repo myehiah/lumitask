@@ -22,14 +22,17 @@ final class PageRepository: PageRepositoryProtocol {
 
     func loadAllPages() async throws -> Page {
         do {
+            print("FETCHING")
             let data = try await remote.fetchPages()
             let rootPage = try JSONDecoder().decode(Page.self, from: data)
             
             try local.saveAllPages(page: rootPage, rawData: data)
             
             return rootPage
-        } catch {
+        }
+        catch {
             // Try local cache
+            print("TRYING LOCAL CACHE")
             let cachedData = try local.loadAllPages()
             let page = try JSONDecoder().decode(Page.self, from: cachedData)
             return page

@@ -9,15 +9,13 @@ import SwiftUI
 
 // Views/ImageDetailView.swift
 struct ImageDetailView: View {
-    let imageURL: String
+    let imageURL: String?
     let title: String
     
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: imageURL)) { image in
-                image.resizable().scaledToFit()
-            } placeholder: {
-                ProgressView()
+            if let imageURL = imageURL, let url = URL(string: imageURL) {
+                SwiftDataImageView(url: url)
             }
             Text(title).padding()
         }

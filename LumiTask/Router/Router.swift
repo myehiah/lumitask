@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 //protocol PageRouter {
 //    @MainActor static func create() -> some View
@@ -42,10 +43,9 @@ final class PageRouterImp {
 //    }
     
     // MARK: - Config Functions
-    @MainActor static func create() -> some View {
-        let router = PageRouterImp()
+    @MainActor static func create(context: ModelContext) -> some View {
         let remote = RemoteDataSourceImp()
-        let local = LocalDataSourceImp()
+        let local = LocalDataSourceImp(context: context)
         let repository = PageRepository(remote: remote, local: local)
         let viewModel = PageViewModel(repository: repository)
         let screen = AppView(viewModel: viewModel)

@@ -20,8 +20,6 @@ struct SwiftDataImageView: View {
                 Image(uiImage: img)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 150)
-                    .cornerRadius(8)
             } else {
                 ProgressView()
             }

@@ -21,10 +21,10 @@ struct AppView: View {
     }
 }
 
-#Preview {
-    AppView(viewModel: PageViewModel(repository: .init(remote: RemoteDataSourceImp(),
-                                                       local: LocalDataSourceImp())))
-}
+//#Preview {
+//    AppView(viewModel: PageViewModel(repository: .init(remote: RemoteDataSourceImp(),
+//                                                       local: LocalDataSourceImp())))
+//}
 
 //import SwiftUI
 //
@@ -129,6 +129,8 @@ struct ItemView: View {
                     {
                         VStack(alignment: .leading) {
                             SwiftDataImageView(url: url)
+                                .frame(height: 150)
+                                .cornerRadius(8)
                             Text(image.title ?? "")
                                 .font(.caption)
                                 .padding(.top, 2)
