@@ -16,6 +16,7 @@ class RemoteDataSourceImp: RemoteDataSource  {
 
     func fetchPages() async throws -> Data {
         let (data, _) = try await URLSession.shared.data(from: url)
+        URLCache.shared.removeAllCachedResponses()
         return data
     }
 }

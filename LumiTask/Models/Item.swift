@@ -12,7 +12,7 @@ enum Item: Codable, Identifiable {
     case section(Section)
     case text(TextQuestion)
     case image(ImageQuestion)
-//    case pageReference(PageReference)
+    case pageReference(PageReference)
 
     var id: UUID {
         switch self {
@@ -20,7 +20,7 @@ enum Item: Codable, Identifiable {
         case .section(let section): return section.id
         case .text(let text): return text.id
         case .image(let image): return image.id
-//        case .pageReference(let ref): return ref.id
+        case .pageReference(let ref): return ref.id
         }
     }
 
@@ -29,7 +29,7 @@ enum Item: Codable, Identifiable {
     }
 
     enum ItemType: String, Codable {
-        case page, section, text, image //, pageReference
+        case page, section, text, image , pageReference
     }
 
     init(from decoder: Decoder) throws {
@@ -42,7 +42,7 @@ enum Item: Codable, Identifiable {
         case .section: self = .section(try single.decode(Section.self))
         case .text: self = .text(try single.decode(TextQuestion.self))
         case .image: self = .image(try single.decode(ImageQuestion.self))
-//        case .pageReference: self = .pageReference(try single.decode(PageReference.self))
+        case .pageReference: self = .pageReference(try single.decode(PageReference.self))
         }
     }
 
@@ -62,9 +62,9 @@ enum Item: Codable, Identifiable {
         case .image(let image):
             try container.encode(ItemType.image, forKey: .type)
             try image.encode(to: encoder)
-//        case .pageReference(let ref):
-//            try container.encode(ItemType.pageReference, forKey: .type)
-//            try ref.encode(to: encoder)
+        case .pageReference(let ref):
+            try container.encode(ItemType.pageReference, forKey: .type)
+            try ref.encode(to: encoder)
         }
     }
 }

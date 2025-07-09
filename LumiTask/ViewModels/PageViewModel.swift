@@ -17,15 +17,29 @@ class PageViewModel: ObservableObject {
     init(repository: PageRepository) {
         self.repository = repository
         Task {
-            await loadPage()
+//            await loadPage()
+            await loadPage(with: "root")
         }
     }
 
+//    @MainActor
+//    func loadPage() async {
+//        isLoading = true
+//        do {
+//            let page = try await repository.loadAllPages()
+//            self.currentPage = page
+//            self.errorMessage = nil
+//        } catch {
+//            self.errorMessage = error.localizedDescription
+//        }
+//        self.isLoading = false
+//    }
+    
     @MainActor
-    func loadPage() async {
+    func loadPage(with id: String = "root") async {
         isLoading = true
         do {
-            let page = try await repository.loadAllPages()
+            let page = try await repository.loadPage(with: id)
             self.currentPage = page
             self.errorMessage = nil
         } catch {

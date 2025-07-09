@@ -13,10 +13,8 @@ struct AppView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
                 if let page = viewModel.currentPage {
                     PageDetailView(page: page)
-                }
             }
         }
     }
@@ -28,8 +26,8 @@ struct AppView: View {
         let data = try Data(contentsOf: url)
 
         // Inject mock remote
-        let remote = RemoteDataSourceImp()
-//        let remote = MockRemoteDataSource(mockData: data)
+//        let remote = RemoteDataSourceImp()
+        let remote = MockRemoteDataSource(mockData: data)
 
         // Inject in-memory SwiftData
         let schema = Schema([CachedPage.self, CachedImage.self])
@@ -49,165 +47,121 @@ struct AppView: View {
     }
 }
 
-
-//#Preview {
-//    AppView(viewModel: PageViewModel(repository: .init(remote: RemoteDataSourceImp(),
-//                                                       local: LocalDataSourceImp())))
-//}
-
-//import SwiftUI
-//
-//struct AppView: View {
-//    
-//    @StateObject var viewModel: PageViewModel
-//
-//    var body: some View {
-////        Text("Hello LumiTask")
-////        Text(viewModel.currentPage?.id.uuidString ?? "")
-////        Text(viewModel.currentPage?.type ?? "")
-////        Text(viewModel.currentPage?.title ?? "")
-////        Text(viewModel.currentPage?.items?.count.description ?? "")
-//        if let page = viewModel.currentPage {
-//            ScrollView {
-////                NavigationStack {
-////                    List {
-//                        ItemView(item: .page(page)) // ✅ wrap Page inside .page(Item)
-////                    }
-////                }
-//            }
-//        }
-//    }
-//}
-//
-//#Preview {
-//    AppView(viewModel: PageViewModel(repository: .init(remote: RemoteDataSourceImp(),
-//                                                       local: LocalDataSourceImp())))
-//}
-
 struct ItemView: View {
+//    @ObservedObject var viewModel: PageViewModel
     let item: Item?
 
     var body: some View {
         Group {
             switch item {
             case .page(let page):
-//                VStack(alignment: .leading, spacing: 10) {
-//                    Text(page.title ?? "")
-//                        .font(.title)
-//                        .bold()
-//                    ForEach(page.items ?? []) { subItem in
-//                        ItemView(item: subItem)
-//                    }
-//                }
-//                .padding(.vertical)
-                NavigationLink(
-                    destination: PageDetailView(page: page)
-                ) {
-                    HStack {
-                        Image(systemName: "doc.text")
-                        Text(page.title ?? "")
-                    }
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(8)
-//                    .frame(maxWidth: .infinity, alignment: .leading) // ✅ Expand full width
-                }
-
+                pageView(page)
+                
             case .section(let section):
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(section.title ?? "")
-                        .font(.title2)
-                        .bold()
-                    ForEach(section.items ?? []) { subItem in
-                        ItemView(item: subItem)
-                    }
-                }
-                .padding(.vertical)
-
+                sectionView(section)
+                
             case .text(let text):
-                Text(text.title ?? "")
-                    .font(.body)
-                    .padding(.vertical, 4)
-
-//            case .image(let image):
-////                Text(image.src ?? "")
-////                    .font(.body)
-////                    .padding(.vertical, 4)
-//
-//                NavigationLink(
-//                    destination: ImageDetailView(imageURL: image.src ?? "", title: image.title ?? "")
-//                ) {
-//                    VStack(alignment: .leading) {
-//                        AsyncImage(url: URL(string: image.src ?? "")) { phase in
-//                            if let img = phase.image {
-//                                img
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(height: 150)
-//                            } else {
-//                                ProgressView()
-//                            }
-//                        }
-//                        Text(image.title ?? "").font(.caption)
-//                    }
-//                }
+                textView(text)
+                
             case .image(let image):
+                imageView(image)
+                
+            case .pageReference(let ref):
+                pageReferenceView(ref)
+                
+            case .none:
+                noItemView
+            }
+        }
+    }
+        // MARK: - Extracted Views
+        private func pageView(_ page: Page) -> some View {
+//            VStack(alignment: .leading, spacing: 10) {
+//                Text(page.title ?? "")
+//                    .font(.title)
+//                    .bold()
+//                ForEach(page.items ?? []) { subItem in
+//                    ItemView(item: subItem)
+//                }
+//            }
+//            .padding(.vertical)
+            NavigationLink(destination: PageDetailView(page: page)) {
+                HStack {
+                    Image(systemName: "doc.text")
+                    Text(page.title ?? "")
+                }
+                .padding()
+                .background(Color.blue.opacity(0.1))
+                .cornerRadius(8)
+            }
+        }
+
+        private func sectionView(_ section: Section) -> some View {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(section.title ?? "")
+                    .font(.title2)
+                    .bold()
+                ForEach(section.items ?? []) { subItem in
+                    ItemView(item: subItem)
+                }
+            }
+            .padding(.vertical)
+        }
+
+        private func textView(_ text: TextQuestion) -> some View {
+            Text(text.title ?? "")
+                .font(.body)
+                .padding(.vertical, 4)
+        }
+
+        private func imageView(_ image: ImageQuestion) -> some View {
+            Group {
                 if let src = image.src, let url = URL(string: src) {
-                    NavigationLink(
-                        destination: ImageDetailView(imageURL: image.src ?? "", title: image.title ?? "")
-                    )
-                    {
+                    NavigationLink(destination: ImageDetailView(imageURL: src, title: image.title ?? "")) {
                         VStack(alignment: .center) {
                             SwiftDataImageView(url: url)
                                 .frame(height: 150)
                                 .cornerRadius(8)
                             Text(image.title ?? "")
                                 .font(.caption)
-//                                .padding(.top, 2)
                         }
                         .padding(.vertical, 4)
                     }
-                    .frame(maxWidth: .infinity, alignment: .center) // Ensures full width + left aligned
+                    .frame(maxWidth: .infinity, alignment: .center)
                 }
-
-//            case .pageReference(let ref): // ✅ Navigate to sub page
-//                NavigationLink(
-//                    destination: PageDetailView(page: page)
-//                ) {
-//                    HStack {
-//                        Image(systemName: "doc.text")
-//                        Text(ref.title)
-//                    }
-//                    .padding()
-//                    .background(Color.blue.opacity(0.1))
-//                    .cornerRadius(8)
-//                }
-
-            case .none:
-                Text("NO ITEMS FOUND")
-                    .font(.body)
-                    .padding(.vertical, 4)
             }
         }
-    }
-}
 
-//struct ItemView: View {
-//    let item: Item?
-//
+        private func pageReferenceView(_ ref: PageReference) -> some View {
+            // You can customize this based on your actual usage
+            HStack {
+                Image(systemName: "doc.text")
+                Text(ref.title)
+            }
+            .padding()
+            .background(Color.red.opacity(0.5))
+            .cornerRadius(8)
+        }
+
+        private var noItemView: some View {
+            Text("NO ITEMS FOUND")
+                .font(.body)
+                .padding(.vertical, 4)
+        }
+    }
 //    var body: some View {
 //        Group {
 //            switch item {
 //            case .page(let page):
-////                VStack(alignment: .leading, spacing: 10) {
-////                    Text("Page: \(page.title ?? "")")
-////                        .font(.title)
-////                        .bold()
-////                    ForEach(page.items ?? []) { subItem in
-////                        ItemView(item: subItem)
-////                    }
-////                }
-////                .padding(.vertical)
+//                //                VStack(alignment: .leading, spacing: 10) {
+//                //                    Text(page.title ?? "")
+//                //                        .font(.title)
+//                //                        .bold()
+//                //                    ForEach(page.items ?? []) { subItem in
+//                //                        ItemView(item: subItem)
+//                //                    }
+//                //                }
+//                //                .padding(.vertical)
 //                NavigationLink(
 //                    destination: PageDetailView(page: page)
 //                ) {
@@ -219,7 +173,7 @@ struct ItemView: View {
 //                    .background(Color.blue.opacity(0.1))
 //                    .cornerRadius(8)
 //                }
-//
+//                
 //            case .section(let section):
 //                VStack(alignment: .leading, spacing: 8) {
 //                    Text(section.title ?? "")
@@ -230,51 +184,61 @@ struct ItemView: View {
 //                    }
 //                }
 //                .padding(.vertical)
-//
+//                
 //            case .text(let text):
 //                Text(text.title ?? "")
 //                    .font(.body)
 //                    .padding(.vertical, 4)
 //
 //            case .image(let image):
-//                Text(image.src ?? "")
-//                    .font(.body)
-//                    .padding(.vertical, 4)
-////                NavigationLink(destination: ImageDetailView(imageURL: image.src, title: image.title)) {
-////                    VStack(alignment: .leading) {
-////                        AsyncImage(url: URL(string: image.src)) { phase in
-////                            if let img = phase.image {
-////                                img
-////                                    .resizable()
-////                                    .scaledToFit()
-////                                    .frame(height: 150)
-////                                    .cornerRadius(8)
-////                            } else {
-////                                ProgressView()
-////                            }
-////                        }
-////                        Text(image.title)
-////                            .font(.caption)
-////                            .padding(.top, 2)
+//                if let src = image.src, let url = URL(string: src) {
+//                    NavigationLink(
+//                        destination: ImageDetailView(imageURL: image.src ?? "", title: image.title ?? "")
+//                    )
+//                    {
+//                        VStack(alignment: .center) {
+//                            SwiftDataImageView(url: url)
+//                                .frame(height: 150)
+//                                .cornerRadius(8)
+//                            Text(image.title ?? "")
+//                                .font(.caption)
+//                            //                                .padding(.top, 2)
+//                        }
+//                        .padding(.vertical, 4)
+//                    }
+//                    .frame(maxWidth: .infinity, alignment: .center) // Ensures full width + left aligned
+//                }
+//                
+//            case .pageReference(let ref): // ✅ Navigate to sub page
+////                NavigationLink(
+////                    destination: PageDetailView(page: viewModel.currentPage)
+////                ) {
+//////                    Button("Open page") {
+//////                        viewModel.loadPage(with: ref)
+//////                    }
+////                    HStack {
+////                        Image(systemName: "doc.text")
+////                        Text(ref.title)
 ////                    }
-////                    .padding(.vertical, 4)
+////                    .padding()
+////                    .background(Color.blue.opacity(0.1))
+////                    .cornerRadius(8)
 ////                }
+//
 //            case .none:
 //                Text("NO ITEMS FOUND")
 //                    .font(.body)
 //                    .padding(.vertical, 4)
-//                
 //            }
 //        }
-//    }
-//}
 
 struct PageDetailView: View {
+//    @ObservedObject var viewModel: PageViewModel
     let page: Page
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            LazyVStack(alignment: .leading, spacing: 16) {
                 ForEach(page.items ?? [], id: \.id) { item in
                     ItemView(item: item)
                 }
@@ -282,7 +246,9 @@ struct PageDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading) // Ensures full width + left aligned
             .padding(.horizontal, 16) // Optional: Better spacing
             .tint(.black)
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.viewAligned)
         .navigationTitle(page.title ?? "")
     }
 }
