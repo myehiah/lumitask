@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AppView: View {
     @StateObject var viewModel: PageViewModel
@@ -20,6 +21,34 @@ struct AppView: View {
         }
     }
 }
+#Preview {
+    do {
+        // Load mock JSON from local file
+        let url = Bundle.main.url(forResource: "MockPage", withExtension: "json")!
+        let data = try Data(contentsOf: url)
+
+        // Inject mock remote
+        let remote = RemoteDataSourceImp()
+//        let remote = MockRemoteDataSource(mockData: data)
+
+        // Inject in-memory SwiftData
+        let schema = Schema([CachedPage.self, CachedImage.self])
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: schema, configurations: [config])
+        let context = container.mainContext
+
+        let local = LocalDataSourceImp(context: context)
+        let repo = PageRepository(remote: remote, local: local)
+        let viewModel = PageViewModel(repository: repo)
+
+        return AppView(viewModel: viewModel)
+            .modelContainer(container)
+
+    } catch {
+        return Text("❌ Failed preview: \(error.localizedDescription)")
+    }
+}
+
 
 //#Preview {
 //    AppView(viewModel: PageViewModel(repository: .init(remote: RemoteDataSourceImp(),
@@ -81,6 +110,7 @@ struct ItemView: View {
                     .padding()
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(8)
+//                    .frame(maxWidth: .infinity, alignment: .leading) // ✅ Expand full width
                 }
 
             case .section(let section):
@@ -127,16 +157,17 @@ struct ItemView: View {
                         destination: ImageDetailView(imageURL: image.src ?? "", title: image.title ?? "")
                     )
                     {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .center) {
                             SwiftDataImageView(url: url)
                                 .frame(height: 150)
                                 .cornerRadius(8)
                             Text(image.title ?? "")
                                 .font(.caption)
-                                .padding(.top, 2)
+//                                .padding(.top, 2)
                         }
                         .padding(.vertical, 4)
                     }
+                    .frame(maxWidth: .infinity, alignment: .center) // Ensures full width + left aligned
                 }
 
 //            case .pageReference(let ref): // ✅ Navigate to sub page
@@ -242,10 +273,15 @@ struct PageDetailView: View {
     let page: Page
 
     var body: some View {
-        List {
-            ForEach(page.items ?? [], id: \.id) { item in
-                ItemView(item: item)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                ForEach(page.items ?? [], id: \.id) { item in
+                    ItemView(item: item)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading) // Ensures full width + left aligned
+            .padding(.horizontal, 16) // Optional: Better spacing
+            .tint(.black)
         }
         .navigationTitle(page.title ?? "")
     }

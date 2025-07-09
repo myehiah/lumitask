@@ -1,0 +1,129 @@
+{
+  "type": "page",
+  "title": "Mock Root Page",
+  "items": [
+    {
+      "type": "section",
+      "title": "Welcome Section",
+      "items": [
+        {
+          "type": "text",
+          "title": "Welcome to the mock page!"
+        },
+        {
+          "type": "image",
+          "src": "https://robohash.org/280?&set=set4&size=400x400",
+          "title": "Welcome Robot"
+        },
+        {
+          "type": "image",
+          "src": "https://robohash.org/100?&set=set4&size=400x400",
+          "title": "100"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Chapter 1",
+      "items": [
+        {
+          "type": "text",
+          "title": "This is Chapter 1"
+        },
+        {
+          "type": "section",
+          "title": "Subsection 1.1",
+          "items": [
+            {
+              "type": "text",
+              "title": "Nested text in subsection"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "title": "Nested Page",
+      "items": [
+        {
+          "type": "section",
+          "title": "Inside Nested Page",
+          "items": [
+            {
+              "type": "text",
+              "title": "Content of nested page"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "src": "https://robohash.org/280?&set=set4&size=400x400",
+      "title": "280"
+    },
+    {
+      "type": "image",
+      "src": "https://robohash.org/100?&set=set4&size=400x400",
+      "title": "100"
+    },
+    {
+      "type": "page",
+      "title": "Nested Page 2",
+      "items": [
+        {
+          "type": "section",
+          "title": "Inside Nested Page",
+          "items": [
+            {
+              "type": "text",
+              "title": "Content of nested page"
+            },
+            {
+              "type": "image",
+              "src": "https://robohash.org/280?&set=set4&size=400x400",
+              "title": "280"
+            },
+            {
+              "type": "image",
+              "src": "https://robohash.org/100?&set=set4&size=400x400",
+              "title": "100"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "title": "Nested Page 3",
+      "items": [
+        {
+          "type": "section",
+          "title": "Inside Nested Page",
+          "items": [
+            {
+              "type": "text",
+              "title": "Content of nested page"
+            },
+            {
+              "type": "image",
+              "src": "https://robohash.org/280?&set=set4&size=400x400",
+              "title": "280"
+            },
+            {
+              "type": "image",
+              "src": "https://robohash.org/100?&set=set4&size=400x400",
+              "title": "100"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "src": "https://robohash.org/100?&set=set4&size=400x400",
+      "title": "100"
+    }
+  ]
+}

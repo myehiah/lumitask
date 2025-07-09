@@ -19,3 +19,16 @@ class RemoteDataSourceImp: RemoteDataSource  {
         return data
     }
 }
+
+final class MockRemoteDataSource: RemoteDataSource {
+    var mockData: Data
+
+    init(mockData: Data) {
+        self.mockData = mockData
+    }
+
+    func fetchPages() async throws -> Data {
+        return mockData
+    }
+}
+
