@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Item: Codable, Identifiable, Equatable {
+enum Item: Codable, Identifiable {
     case page(Page)
     case section(Section)
     case text(TextQuestion)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TextQuestion: Codable, Identifiable, Equatable {
+struct TextQuestion: Codable, Identifiable {
     let id = UUID()
     let type: String
     let title: String?

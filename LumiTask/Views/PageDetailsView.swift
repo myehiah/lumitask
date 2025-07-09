@@ -9,24 +9,18 @@ import SwiftUI
 
 struct PageDetailsView: View {
     let page: Page
-
+    
     var body: some View {
-//        NavigationStack {
-//            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(page.items, id: \.id) { item in
-                        ItemView(item: item)
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-                .tint(.black)
-                .scrollTargetLayout()
+        LazyVStack(alignment: .leading, spacing: 16) {
+            ForEach(page.items, id: \.id) { item in
+                ItemView(item: item)
             }
-//            .scrollTargetBehavior(.viewAligned)
-//            .navigationTitle(page.title ?? "")
-//        }
-//    }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16)
+        .tint(.black)
+        .scrollTargetLayout()
+    }
 }
 
 #Preview {

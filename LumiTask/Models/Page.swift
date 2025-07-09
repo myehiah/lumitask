@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Page: Codable, Identifiable, Equatable {
+struct Page: Codable, Identifiable {
     let id: UUID = UUID()
     let type: String
     let title: String?

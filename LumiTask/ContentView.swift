@@ -15,7 +15,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            if let errorMessage = viewModel.errorMessage {
+            if let _ = viewModel.errorMessage {
                 ErrorView(viewModel: viewModel)
             } else {
                 ScrollView {

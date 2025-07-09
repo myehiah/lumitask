@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Section: Codable, Identifiable, Equatable {
+struct Section: Codable, Identifiable {
     let id = UUID()
     let type: String
     let title: String?
