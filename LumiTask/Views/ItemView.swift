@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ItemView: View {
     let item: Item
+    var level: Int = 0
     
     var body: some View {
         switch item {
@@ -16,8 +17,8 @@ struct ItemView: View {
             pageView(page)
             
         case .section(let section):
-            sectionView(section)
-            
+            sectionView(section, level: level)
+
         case .text(let text):
             textView(text)
             
@@ -30,7 +31,7 @@ struct ItemView: View {
     private func pageView(_ page: Page) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(page.title ?? "")
-                .font(.title)
+                .font(.largeTitle)
                 .bold()
             ForEach(page.items) { subItem in
                 ItemView(item: subItem)
@@ -48,13 +49,17 @@ struct ItemView: View {
 //        }
     }
     
-    private func sectionView(_ section: Section) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+    private func sectionView(_ section: Section, level: Int = 0) -> some View {
+        let baseFontSize: CGFloat = 25
+        let fontSize = baseFontSize * pow(0.8, CGFloat(level))
+
+        return VStack(alignment: .leading, spacing: 8) {
             Text(section.title ?? "")
-                .font(.title2)
+                .font(.system(size: fontSize))
                 .bold()
+
             ForEach(section.items) { subItem in
-                ItemView(item: subItem)
+                ItemView(item: subItem, level: level + 1)
             }
         }
         .padding(.vertical)
@@ -62,7 +67,7 @@ struct ItemView: View {
     
     private func textView(_ text: TextQuestion) -> some View {
         Text(text.title ?? "")
-            .font(.body)
+            .font(.subheadline)
             .padding(.vertical, 4)
     }
     
@@ -75,7 +80,7 @@ struct ItemView: View {
                             .frame(height: 150)
                             .cornerRadius(8)
                         Text(image.title ?? "")
-                            .font(.caption)
+                            .font(.subheadline)
                     }
                     .padding(.vertical, 4)
                 }

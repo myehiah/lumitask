@@ -10,7 +10,8 @@ import SwiftData
 
 @Model
 final class CachedPage {
-    @Attribute(.unique) var title: String?
+    @Attribute(.unique) var pageId: String = UUID().uuidString
+    var title: String?
     var rawData: Data
 
     init(title: String?, rawData: Data) {

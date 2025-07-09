@@ -18,6 +18,6 @@ struct ImageDetailView: View {
             }
             Text(title).padding()
         }
-        .navigationTitle("Image")
+//        .navigationTitle("\(title)")
     }
 }

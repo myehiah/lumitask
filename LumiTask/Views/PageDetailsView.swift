@@ -31,7 +31,7 @@ struct PageDetailsView: View {
 
 #Preview {
     do {
-        let url = Bundle.main.url(forResource: "EmptyMockPage", withExtension: "json")!
+        let url = Bundle.main.url(forResource: "MockPage", withExtension: "json")!
         let data = try Data(contentsOf: url)
         let page = try JSONDecoder().decode(Page.self, from: data)
         return PageDetailsView(page: page)
