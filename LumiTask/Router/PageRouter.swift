@@ -13,7 +13,7 @@ final class PageRouter {
         let remote = RemoteDataSourceImp()
         let local = LocalDataSourceImp(context: context)
         let repository = PageRepository(remote: remote, local: local)
-        let viewModel = PageViewModel(repository: repository)
+        let viewModel = PageViewModel(repository: repository, page: page)
         let screen = ContentView(viewModel: viewModel)
         return screen
     }

@@ -28,6 +28,7 @@ final class PageRepository: PageRepositoryProtocol {
             return rootPage
         }
         catch {
+            print("ERROR! \(error.localizedDescription)")
             let cachedData = try local.loadAllPages()
             let page = try JSONDecoder().decode(Page.self, from: cachedData)
             return page

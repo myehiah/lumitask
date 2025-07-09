@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ImageQuestion: Codable, Identifiable {
+struct ImageQuestion: Codable, Identifiable, Equatable {
     let id = UUID()
     let type: String
     let title: String?

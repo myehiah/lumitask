@@ -25,7 +25,7 @@ struct SplashView: View {
                         .scaledToFit()
                         .frame(width: 120)
                         .rotationEffect(.degrees(isAnimating ? 360 : 0))
-                        .animation(.linear(duration: 2).repeatForever(autoreverses: false), value: isAnimating)
+                        .animation(.linear(duration: 2).repeatForever(autoreverses: true), value: isAnimating)
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

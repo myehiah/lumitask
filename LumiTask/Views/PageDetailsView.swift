@@ -11,8 +11,8 @@ struct PageDetailsView: View {
     let page: Page
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
+//        NavigationStack {
+//            ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(page.items, id: \.id) { item in
                         ItemView(item: item)
@@ -23,10 +23,10 @@ struct PageDetailsView: View {
                 .tint(.black)
                 .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.viewAligned)
-            .navigationTitle(page.title ?? "")
-        }
-    }
+//            .scrollTargetBehavior(.viewAligned)
+//            .navigationTitle(page.title ?? "")
+//        }
+//    }
 }
 
 #Preview {

@@ -12,11 +12,23 @@ struct ContentView: View {
     @StateObject var viewModel: PageViewModel
     
     var body: some View {
-        if let page = viewModel.currentPage {
-            PageDetailsView(page: page)
+        NavigationStack {
+            ScrollView {
+                if let page = viewModel.currentPage {
+                    PageDetailsView(page: page)
+                        .scrollTargetBehavior(.viewAligned)
+                        .navigationTitle(page.title ?? "")
+                }
+            }
+            .refreshable {
+                Task.detached {
+                    await viewModel.loadPage()
+                }
+            }
         }
     }
 }
+
 #Preview {
     do {
         let url = Bundle.main.url(forResource: "MockPage", withExtension: "json")!
