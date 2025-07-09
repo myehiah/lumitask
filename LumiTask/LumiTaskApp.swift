@@ -25,7 +25,7 @@ struct LumiTaskApp: App {
 
     var body: some Scene {
         WindowGroup {
-            SplashView(context: sharedModelContainer.mainContext)
+            SplashRouter.create(context: sharedModelContainer.mainContext)
         }
         .modelContainer(sharedModelContainer)
     }

@@ -9,15 +9,22 @@ import Foundation
 
 class PageViewModel: ObservableObject {
     private let repository: PageRepository
+    private let page: Page?
 
     @Published var currentPage: Page?
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
 
-    init(repository: PageRepository) {
+    init(repository: PageRepository, page: Page? = nil) {
         self.repository = repository
-        Task {
-            await loadPage()
+        self.page = page
+        
+        if let page = page {
+            self.currentPage = page
+        } else {
+            Task {
+                await loadPage()
+            }
         }
     }
 
