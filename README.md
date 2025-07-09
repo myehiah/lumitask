@@ -1,7 +1,9 @@
+![AppIcon (1)](https://github.com/user-attachments/assets/f23eedfc-f4b9-4f70-a4cf-4973a557da70)
 # LumiBook 🪄📘
 This is Lumiform's iOS Challenge.
 
-LumiBook is a SwiftUI-based modular content viewer app designed to display structured pages that can include nested sections, text, images, and links to other pages. It includes robust offline support using SwiftData and seamlessly falls back to local data if network access is unavailable.
+LumiBook is a SwiftUI-based modular content viewer app designed to display structured pages that c![Uploading logo.png…]()
+an include nested sections, text, images, and links to other pages. It includes robust offline support using SwiftData and seamlessly falls back to local data if network access is unavailable.
 
 ## ✅ Requirements
 
