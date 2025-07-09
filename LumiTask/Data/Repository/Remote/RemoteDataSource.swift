@@ -12,8 +12,13 @@ protocol RemoteDataSource {
 }
 
 class RemoteDataSourceImp: RemoteDataSource  {
-    let url = URL(string: "https://mocki.io/v1/f118b9f0-6f84-435e-85d5-faf4453eb72a")!
-
+    private var url: URL {
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as? String,
+              let url = URL(string: urlString) else {
+            fatalError("❌ Missing or invalid API_BASE_URL in Info.plist")
+        }
+        return url
+    }
     func fetchPages() async throws -> Data {
         let (data, _) = try await URLSession.shared.data(from: url)
         return data

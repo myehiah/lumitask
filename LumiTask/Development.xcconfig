@@ -1,0 +1,4 @@
+// Development.xcconfig
+
+// Set your API endpoint
+API_BASE_URL = https://mocki.io/v1/f118b9f0-6f84-435e-85d5-faf4453eb72a
